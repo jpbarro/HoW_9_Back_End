@@ -61,6 +61,26 @@
   - 401 Unauthorized: Token de acesso inválido ou expirado.
   - 500: Erro ao deletar o post
 
+### Editar um Post
+
+- **Endpoint:** `PUT /posts/{id}/`
+- **Descrição:** Edita um post.
+- **Cabeçalho da Requisição:**
+  - `Authorization` (string, obrigatório): Acess Token gerado no endpoint `/api/token/`.
+- **Corpo da Requisição:**
+  - `title` (string): Título editado do post.
+  - `content` (string): Conteúdo editado do post.
+- **Resposta de Sucesso:**
+  - `id` (int): ID único do post criado.
+  - `title` (string): Título do post editado.
+  - `content` (string): Conteúdo do post editado.
+  - `author` (int): ID único do usuario que criou post.
+  - `created_at` (string): Data da criação.
+  - `updated_at` (string): Data do update.
+- **Resposta de Erro:**
+  - 400 Bad Request: Dados de entrada inválidos.
+  - 401 Unauthorized: Token de acesso inválido ou expirado.
+
 ### Obter Todos os Posts
 
 - **Endpoint:** `GET /posts/`

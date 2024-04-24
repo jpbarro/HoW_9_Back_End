@@ -31,6 +31,24 @@ class PostViewSet(viewsets.ModelViewSet):
         except Exception as e:
             logger.error("Erro ao deletar o post: %s", str(e))
             return Response({"message": "Erro ao deletar o post."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        if instance.author != self.request.user:
+            return Response({"message": "Sem permissão para editar este post."}, status=status.HTTP_403_FORBIDDEN)
+
+        try:
+            serializer.save()
+            return Response(serializer.data)
+        except Exception as e:
+            return Response({"message": "Erro ao editar o post."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
 
 #VIEWSET CRIAR USUARIO
 class UserViewSet(viewsets.ViewSet):
