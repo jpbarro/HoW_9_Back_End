@@ -2,6 +2,8 @@ env
 HoW_9_Back_End/__pycache__/
 Public_Services_Tracking/__pycache__/
 .env
+venv
+.venv
 
 
 
