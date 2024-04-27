@@ -1,3 +1,13 @@
+### Iniciar projeto
+- **Criar ambiente virtual:**
+    - `python3 -m venv venv` ou `python -m venv venv`
+- **Ativar ambiente virtual:**
+    - `source venv/bin/activate` ou no windows: `venv\Scripts\activate`
+- **Instalar dependencias:**
+    - `pip install -r requirements.txt`
+- **Rodar o projeto:**
+    - `python manage.py runserver` ou `python3 manage.py runserver`
+
 ### Criar Usuario
 - **Endpoint:** `POST /users/create_user/`
   - **Descrição:** Cria um user novo na database.
