@@ -12,9 +12,16 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+from dotenv import load_dotenv
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Load environment variables from .env file
+dotenv_path = os.path.join(BASE_DIR, '.env')
+if os.path.exists(dotenv_path):
+    load_dotenv(dotenv_path)
 
 
 # Quick-start development settings - unsuitable for production
@@ -41,6 +48,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'Public_Services_Tracking',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -81,7 +89,7 @@ WSGI_APPLICATION = 'HoW_9_Back_End.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': '/home/joao/Documents/jp-folder/HoW-9/HoW_9_DB',
+        'NAME': os.getenv('DB_PATH'),
     }
 }
 
@@ -90,6 +98,11 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         # outras classes de autenticação, se necessário
     ],
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.JSONParser',
+        'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.MultiPartParser',  # Make sure this is included
+    ]
 }
 
 
@@ -141,3 +154,12 @@ CORS_ALLOWED_ORIGINS = [
 SIMPLE_JWT = {
    "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
 }
+
+# Use the environment variables in your settings
+AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
+
+AWS_S3_FILE_OVERWRITE=False
+AWS_DEFAULT_ACL=None
+DEFAULT_FILE_STORAGE='storages.backends.s3boto3.S3Boto3Storage'

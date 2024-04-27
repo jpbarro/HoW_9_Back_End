@@ -46,6 +46,21 @@
   - 400 Bad Request: Dados de entrada inválidos.
   - 401 Unauthorized: Token de acesso inválido ou expirado.
 
+### Upload imagem de um Post
+
+- **Endpoint:** `POST /api/upload/`
+- **Descrição:** Faz o upload de uma imagem pro AWS e conecta com o id do post.
+- **Cabeçalho da Requisição:**
+  - `Authorization` (string, obrigatório): Acess Token gerado no endpoint `/api/token/`.
+- **Corpo da Requisição:**
+  - `file` (file, obrigatório): Arquivo pra ser enviado.
+  - `post_id` (string, obrigatório): Id do post relacionado a imagem.
+- **Resposta de Sucesso:**
+  - 201 CREATED: "message" : "File uploaded successfully".
+- **Resposta de Erro:**
+  - 404 NOT_FOUND: "message": "Post not found".
+  - 500_INTERNAL_SERVER_ERROR: "message": "Error uploading file".
+
 ### Deletar um Post
 
 - **Endpoint:** `DELETE /posts/{id}/`

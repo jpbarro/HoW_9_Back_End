@@ -3,9 +3,11 @@ from django.contrib.auth.models import User
 from rest_framework import serializers
 
 class PostSerializer(serializers.ModelSerializer):
+    image = serializers.ImageField(required=False)
+
     class Meta:
         model = Post
-        fields = ['id', 'title', 'content', 'author', 'created_at', 'updated_at']
+        fields = ['id', 'title', 'content', 'author', 'created_at', 'updated_at', 'image']
         read_only_fields = ['author']
 
 class UserSerializer(serializers.Serializer):
