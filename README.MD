@@ -1,4 +1,6 @@
 ### Iniciar projeto
+- **Instalar python virtual enviroment**
+    - `pip install virtualenv`
 - **Criar ambiente virtual:**
     - `python3 -m venv venv` ou `python -m venv venv`
 - **Ativar ambiente virtual:**
