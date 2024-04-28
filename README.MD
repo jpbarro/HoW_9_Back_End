@@ -47,31 +47,12 @@
 - **Corpo da Requisição:**
   - `title` (string, obrigatório): Título do post.
   - `content` (string, obrigatório): Conteúdo do post.
+  - `file` (file, obrigatório): Arquivo pra ser enviado.
 - **Resposta de Sucesso:**
-  - `id` (int): ID único do post criado.
-  - `title` (string): Título do post.
-  - `content` (string): Conteúdo do post.
-  - `author` (int): ID único do usuario que criou post.
-  - `created_at` (string): Data da criação.
-  - `updated_at` (string): Data do update.
+  - "message": "Post created and file uploaded successfully"
 - **Resposta de Erro:**
   - 400 Bad Request: Dados de entrada inválidos.
   - 401 Unauthorized: Token de acesso inválido ou expirado.
-
-### Upload imagem de um Post
-
-- **Endpoint:** `POST /api/upload/`
-- **Descrição:** Faz o upload de uma imagem pro AWS e conecta com o id do post.
-- **Cabeçalho da Requisição:**
-  - `Authorization` (string, obrigatório): Acess Token gerado no endpoint `/api/token/`.
-- **Corpo da Requisição:**
-  - `file` (file, obrigatório): Arquivo pra ser enviado.
-  - `post_id` (string, obrigatório): Id do post relacionado a imagem.
-- **Resposta de Sucesso:**
-  - 201 CREATED: "message" : "File uploaded successfully".
-- **Resposta de Erro:**
-  - 404 NOT_FOUND: "message": "Post not found".
-  - 500_INTERNAL_SERVER_ERROR: "message": "Error uploading file".
 
 ### Deletar um Post
 
