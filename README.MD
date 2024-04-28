@@ -78,6 +78,7 @@
 - **Corpo da Requisição:**
   - `title` (string): Título editado do post.
   - `content` (string): Conteúdo editado do post.
+  - `file` (file): imagem para ser alterada (opcional).
 - **Resposta de Sucesso:**
   - `id` (int): ID único do post criado.
   - `title` (string): Título do post editado.
@@ -85,6 +86,7 @@
   - `author` (int): ID único do usuario que criou post.
   - `created_at` (string): Data da criação.
   - `updated_at` (string): Data do update.
+  - `image` (string): Link da imagem do post.
 - **Resposta de Erro:**
   - 400 Bad Request: Dados de entrada inválidos.
   - 401 Unauthorized: Token de acesso inválido ou expirado.
@@ -103,5 +105,6 @@
     - `author` (int): ID único do usuario que criou post.
     - `created_at` (string): Data da criação.
     - `updated_at` (string): Data do update.
+    - `image` (string): Link da imagem. 
 - **Resposta de Erro:**
   - 401 Unauthorized: Token de acesso inválido ou expirado.

@@ -37,7 +37,7 @@ class PostViewSet(viewsets.ModelViewSet):
             post.save()
             file_name = f'{post.id}_{file_obj.name}'
             default_storage.save(file_name, file_obj)
-            post.image = default_storage.url(file_name)
+            post.image = file_name
             post.save()
             return Response({"message": "Post created and file uploaded successfully"}, status=status.HTTP_201_CREATED)
         except Exception as e:
@@ -67,9 +67,22 @@ class PostViewSet(viewsets.ModelViewSet):
 
         if instance.author != self.request.user:
             return Response({"message": "Sem permissão para editar este post."}, status=status.HTTP_403_FORBIDDEN)
+        
+        image_url = instance.image.url if instance.image else None
 
         try:
             serializer.save()
+            file_obj = request.data.get('file')
+            if file_obj:
+                # Excluindo a imagem anterior, se existir
+                if image_url:
+                    default_storage.delete(image_url)
+
+            # Salvando a nova imagem e atualizando o post
+            file_name = f'{instance.id}_{file_obj.name}'
+            default_storage.save(file_name, file_obj)
+            instance.image = file_name
+            instance.save()
             return Response(serializer.data)
         except Exception as e:
             return Response({"message": "Erro ao editar o post."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
