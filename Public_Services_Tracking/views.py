@@ -18,9 +18,31 @@ class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
+    parser_classes = [MultiPartParser]
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
+    
+    def create(self, request, *args, **kwargs):
+        logger = logging.getLogger(__name__)
+        file_obj = request.data.get('file')
+        title = request.data.get('title')
+        content = request.data.get('content')
+
+        if not file_obj or not title or not content:
+            return Response({"message": "Missing required fields"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            post = Post(title=title, content=content, author=self.request.user)
+            post.save()
+            file_name = f'{post.id}_{file_obj.name}'
+            default_storage.save(file_name, file_obj)
+            post.image = default_storage.url(file_name)
+            post.save()
+            return Response({"message": "Post created and file uploaded successfully"}, status=status.HTTP_201_CREATED)
+        except Exception as e:
+            logger.error("Error creating post: %s", str(e))
+            return Response({"message": "Error creating post"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def destroy(self, request, *args, **kwargs):
         logger = logging.getLogger(__name__)
@@ -51,29 +73,6 @@ class PostViewSet(viewsets.ModelViewSet):
             return Response(serializer.data)
         except Exception as e:
             return Response({"message": "Erro ao editar o post."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-class FileUploadView(APIView):
-    parser_classes = [MultiPartParser]
-
-    def post(self, request, format=None):
-        if 'file' not in request.data:
-            return Response({"message": "File key not found"}, status=status.HTTP_400_BAD_REQUEST)
-        
-        file_obj = request.data['file']
-        post_id = request.data['post_id']
-        print(request.data)
-
-        try:
-            post = Post.objects.get(id=post_id)
-            file_name = f'{post.id}_{file_obj.name}'
-            default_storage.save(file_name, file_obj)
-            post.image = default_storage.url(file_name)
-            post.save()
-            return Response({"message": "File uploaded successfully"}, status=status.HTTP_201_CREATED)
-        except Post.DoesNotExist:
-            return Response({"message": "Post not found"}, status=status.HTTP_404_NOT_FOUND)
-        except Exception as e:
-            return Response({"message": "Error uploading file"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 #VIEWSET CRIAR USUARIO
 class UserViewSet(viewsets.ViewSet):
