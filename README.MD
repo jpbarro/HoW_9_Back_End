@@ -108,3 +108,21 @@
     - `image` (string): Link da imagem. 
 - **Resposta de Erro:**
   - 401 Unauthorized: Token de acesso inválido ou expirado.
+
+### Post Específico
+
+- **Endpoint:** `GET /posts/{id}/`
+- **Descrição:** Retorna post especifico baseado no id colocado na requisição.
+- **Cabeçalho da Requisição:**
+  - `Authorization` (string, obrigatório): Acess Token gerado no endpoint `/api/token/`.
+- **Resposta de Sucesso:**
+  - Lista de objetos de post, cada um contendo:
+    - `id` (int): ID único do post.
+    - `title` (string): Título do post.
+    - `content` (string): Conteúdo do post.
+    - `author` (int): ID único do usuario que criou post.
+    - `created_at` (string): Data da criação.
+    - `updated_at` (string): Data do update.
+    - `image` (string): Link da imagem. 
+- **Resposta de Erro:**
+  - 401 Unauthorized: Token de acesso inválido ou expirado.
